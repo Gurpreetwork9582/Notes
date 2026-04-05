@@ -32,6 +32,10 @@
       <tr>
         <td>{{Account.email}}</td>
         <td>{{Account.password}}</td>
+        <td>
+          <a href="/delete/{{Account.id}}">Delete</a><br>
+          <a href="/Edit/{{Account.id}}">Update</a>
+        </td>
       </tr>
       {% endfor%}
     </table>

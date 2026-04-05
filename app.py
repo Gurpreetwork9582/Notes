@@ -40,6 +40,23 @@ def index():
         return render_template('index.html',Accounts=Accounts)
             
 
+@app.route("/delete/<int:id>")
+def delete(id:int):
+    deletuser=User.query.get_or_404(id)
+    try:
+        db.session.delete(deletuser)
+        db.session.commit()
+        return redirect("/")
+    except Exception:
+        return f"Error {Exception}"    
+
+@app.route("/Edit/<id>")
+def Edit(id):
+    edituser=User.query.update(id)
+    try:
+        
+    
+    except:
 
 
 if __name__=="__main__":
