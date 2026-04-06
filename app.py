@@ -37,7 +37,7 @@ def index():
             
     else:
         Accounts = User.query.order_by(User.id).all()
-        return render_template('index.html',Accounts=Accounts)
+        return render_template('index.html', Accounts=Accounts)
             
 
 @app.route("/delete/<int:id>")
@@ -50,13 +50,21 @@ def delete(id:int):
     except Exception:
         return f"Error {Exception}"    
 
-@app.route("/Edit/<id>")
+@app.route("/Edit/<id>", methods= ["POST","GET"])
 def Edit(id):
-    edituser=User.query.update(id)
-    try:
+    edituser=User.query.get_or_404(id)
+    if request.method == "POST":
+        edituser.email=request.form['email']
+        try:
+            db.session.commit()
+            return redirect("/")
         
+        except Exception:
+            return f"Error {Exception}"
     
-    except:
+    else:
+        return render_template('edit.html', user=edituser)
+
 
 
 if __name__=="__main__":
