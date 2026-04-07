@@ -39,7 +39,34 @@ def notes():
    #return render_template('notes.html')
 
 
+@app.route("/delete/<id>")
+def delete(id):
+    delete_id=Notes.query.get_or_404(id)
+    try:
+        db.session.delete(delete_id)
+        db.session.commit()
+        return redirect("/")
+    
+    except Exception as e:
+        return f"Error{e}"
 
+
+
+@app.route("/edit/<int:id>", methods=["POST","GET"])
+def edit(id):
+    if request.method=="POST":
+        edit_id=Notes.query.get_or_404(id)
+        edit_id.topic=request.form['topic']
+        edit_id.note=request.form['note']
+        try:
+            db.session.commit()
+            return redirect("/")
+        
+        except Exception:
+            return f"Error {Exception}"
+    else:
+         edit_notes=Notes.query.order_by(Notes.id).all()
+         return render_template('edit2.html', note=edit_id)    
 
 
 

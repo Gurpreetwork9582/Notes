@@ -1,0 +1,23 @@
+{% extends 'Base.html'%}
+
+{% block body %}
+  <form method="POST" class="relative items-center" action="/edit/{{note.id}} ">
+
+  <div>
+    <input type="text" name="topic" placeholder="Enter topic" value="{{ note.topic }}" required>
+  </div>
+
+  <br>
+
+  <div>
+    <textarea name="note" rows="5" placeholder="Write your note here..." required></textarea>
+  </div>
+
+  <br>
+
+  <button type="submit">Save Note</button>
+
+</form>
+
+
+{% endblock %}
