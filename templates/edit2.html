@@ -1,10 +1,10 @@
 {% extends 'Base.html'%}
 
 {% block body %}
-  <form method="POST" class="relative items-center" action="/edit/{{note.id}} ">
+  <form method="POST" class="relative items-center" action="/edit/{{note_id.id}} ">
 
   <div>
-    <input type="text" name="topic" placeholder="Enter topic" value="{{ note.topic }}" required>
+    <input type="text" name="topic" placeholder="Enter topic" required>
   </div>
 
   <br>

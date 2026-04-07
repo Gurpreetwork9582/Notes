@@ -54,8 +54,8 @@ def delete(id):
 
 @app.route("/edit/<int:id>", methods=["POST","GET"])
 def edit(id):
+    edit_id=Notes.query.get_or_404(id)
     if request.method=="POST":
-        edit_id=Notes.query.get_or_404(id)
         edit_id.topic=request.form['topic']
         edit_id.note=request.form['note']
         try:
@@ -65,8 +65,7 @@ def edit(id):
         except Exception:
             return f"Error {Exception}"
     else:
-         edit_notes=Notes.query.order_by(Notes.id).all()
-         return render_template('edit2.html', note=edit_id)    
+         return render_template('edit2.html', note_id=edit_id, topic=edit_id.topic,note=edit_id.note)    
 
 
 
