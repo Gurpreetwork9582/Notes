@@ -3,13 +3,13 @@
 <form method="POST" class="relative items-center">
 
   <div>
-    <input type="text" name="topic" placeholder="Enter topic">
+    <input type="text" name="topic" placeholder="Enter topic" required>
   </div>
 
   <br>
 
   <div>
-    <textarea name="note" rows="5" placeholder="Write your note here..."></textarea>
+    <textarea name="note" rows="5" placeholder="Write your note here..." required></textarea>
   </div>
 
   <br>
@@ -19,13 +19,18 @@
 </form>
 
 
-<table>
+
 {% for i in All_Notes %}
-      <tr>
-        <td>{{i.text}}</td>
-        <td>{{i.note}}</td>
-      </tr>
-      {% endfor%}
-</table>
+    <div class="flex flex-col justify-center p-6 text-center bg-neutral-primary-soft max-w-sm border border-default rounded-base shadow-xs  gap-4 m-4">
+        <a href="#">
+            <h3 class="mt-3 mb-6 text-2xl font-semibold tracking-tight text-heading">{{i.topic}}</h3>
+            <h5 class="mt-3 mb-6 text-2xl font-semibold tracking-tight text-heading">{{i.note}}</h5>
+            <div class="grid grid-cols-2 justify-items-end">
+                <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5">Edit</button>
+                <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5">Delete</button>
+            </div>
+        </a>
+    </div>
+{% endfor %}
 
 {% endblock %}
