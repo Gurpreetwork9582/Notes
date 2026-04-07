@@ -1,0 +1,31 @@
+{% extends 'Base.html' %}
+{% block body %}
+<form method="POST" class="relative items-center">
+
+  <div>
+    <input type="text" name="topic" placeholder="Enter topic">
+  </div>
+
+  <br>
+
+  <div>
+    <textarea name="note" rows="5" placeholder="Write your note here..."></textarea>
+  </div>
+
+  <br>
+
+  <button type="submit">Save Note</button>
+
+</form>
+
+
+<table>
+{% for i in All_Notes %}
+      <tr>
+        <td>{{i.text}}</td>
+        <td>{{i.note}}</td>
+      </tr>
+      {% endfor%}
+</table>
+
+{% endblock %}

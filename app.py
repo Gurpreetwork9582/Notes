@@ -14,6 +14,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100),nullable=False, unique=True)
     password =db.Column(db.String(100),nullable=False)
+    topic = db.column(db.String(100), nullable=False)
+    note=db.column(db.String(100),nullable=False)
+    
     
     def __repr__(self):
         return f"{self.id}"    
@@ -64,6 +67,7 @@ def Edit(id):
     
     else:
         return render_template('edit.html', user=edituser)
+
 
 
 
