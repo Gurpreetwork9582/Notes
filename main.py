@@ -38,8 +38,7 @@ class Notes(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'),name="fk_notes_user_id")
     user = db.relationship('Users', back_populates='note')
     
-    with app.app_context():
-        db.create_all()
+   
     
     def __repr__(self):
         return f"{self.id}"    
@@ -47,12 +46,13 @@ class Notes(db.Model):
     
 
 @app.route("/", methods=["POST","GET"])
+@login_required
 def notes():
     if request.method=="POST":
         new_topic = request.form['topic'] #Flask has captured it 
         new_note =request.form['note']
         
-        One_note=Notes(topic=new_topic, note=new_note)
+        One_note=Notes(topic=new_topic, note=new_note, user=current_user)
         try:
             db.session.add(One_note)
             db.session.commit()
@@ -134,11 +134,11 @@ def login():
 
         if user and user.password==password:
             login_user(user)
-            return render_template("profile.html")
+            return redirect(url_for("profile"))
         else:
             return render_template("login.html", error="Invalid username or password")
 
-    return render_template("profile.html")
+    return render_template("login.html")
 
 
 
@@ -154,6 +154,13 @@ def logout():
     logout_user()
     return redirect(url_for("notes"))
 
+@app.route("/profile")
+@login_required
+def profile():
+    return render_template("profile.html")
+
 
 if __name__=="__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, port=8000)
