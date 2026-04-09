@@ -26,7 +26,7 @@ class Users(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
-    note = db.relationship('Notes',uselist=False, back_populates='user')
+    note = db.relationship('Notes' ,back_populates='user')
 
 
 #database model(data class)
@@ -44,36 +44,34 @@ class Notes(db.Model):
         return f"{self.id}"    
     
     
-
-@app.route("/", methods=["POST","GET"])
+########################## BEFORE LOGIN ####################################    
+ 
+@app.route("/notes", methods=["GET", "POST"])
 @login_required
-def notes():
-    if request.method=="POST":
-        new_topic = request.form['topic'] #Flask has captured it 
-        new_note =request.form['note']
-        
-        One_note=Notes(topic=new_topic, note=new_note, user=current_user)
-        try:
-            db.session.add(One_note)
-            db.session.commit()
-            return redirect("/")
-            
-        except Exception as e:
-            return f"Error {e}"
-    else:
-        All_Notes=Notes.query.all()
-        return render_template('notes.html', All_Notes=All_Notes)
-        
-   #return render_template('notes.html')
+def note():
+    if request.method == "POST":
+        topic = request.form['topic']
+        note = request.form['note']
+
+        new_note = Notes(topic=topic, note=note,user=current_user)
+
+        db.session.add(new_note)
+        db.session.commit()
+        return redirect("/notes")
+
+    notes = Notes.query.filter_by(user_id=current_user.id).all()
+    return render_template("notes.html", All_Notes=notes,user_id=current_user)  
+    
 
 
 @app.route("/delete/<id>")
+@login_required
 def delete(id):
     delete_id=Notes.query.get_or_404(id)
     try:
         db.session.delete(delete_id)
         db.session.commit()
-        return redirect("/")
+        return redirect("/notes")
     
     except Exception as e:
         return f"Error{e}"
@@ -81,6 +79,7 @@ def delete(id):
 
 
 @app.route("/edit/<int:id>", methods=["POST","GET"])
+@login_required
 def edit(id):
     edit_id=Notes.query.get_or_404(id)
     if request.method=="POST":
@@ -88,7 +87,7 @@ def edit(id):
         edit_id.note=request.form['note']
         try:
             db.session.commit()
-            return redirect("/")
+            return redirect("/notes")
         
         except Exception:
             return f"Error {Exception}"
@@ -124,7 +123,7 @@ def register():
 
 
 # Login route
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form.get("username")
@@ -152,7 +151,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("notes"))
+    return redirect("/notes")
 
 @app.route("/profile")
 @login_required
