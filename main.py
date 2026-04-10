@@ -13,6 +13,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config["SECRET_KEY"] = "mysecretkey123"
 db = SQLAlchemy(app)
 
+with app.app_context():
+    db.create_all()
+
 login_manager=LoginManager() # handles all the login functionalities
 login_manager.init_app(app) # initializing db with flask app
 login_manager.login_view = "login" # if user not logged in send them to login fuction
@@ -160,6 +163,5 @@ def profile():
 
 
 if __name__=="__main__":
-    with app.app_context():
-        db.create_all()
+   
     app.run(debug=True, port=8000)
