@@ -2,14 +2,15 @@ from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
 from flask_migrate import Migrate
+import os
+from dotenv import load_dotenv
 
-
-
+load_dotenv()
 
 app = Flask(__name__)
 
 #database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///test.db')
 app.config["SECRET_KEY"] = "mysecretkey123"
 db = SQLAlchemy(app)
 
